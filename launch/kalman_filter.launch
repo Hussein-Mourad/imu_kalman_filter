@@ -1,4 +1,4 @@
 <launch>
     <node pkg="imu_kalman_filter" name="yaw_kalman_filter_listener" type="yaw_kalman_filter_listener.py"/>
-    <node pkg="rosserial_arduino" type="serial_node.py" name="serial_node" args="$(arg port) $(arg baud)"/>
+    <node pkg="rosserial_python" type="serial_node.py" name="serial_node" args="$(arg port) $(arg baud)"/>
 </launch>

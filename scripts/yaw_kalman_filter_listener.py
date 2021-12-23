@@ -3,6 +3,8 @@ import rospy
 from std_msgs.msg import Float32
 
 TOPIC_NAME = "yaw_kalman_filter"
+TOPIC_NAME_PUBLISHER = "yaw_kalman_filter_publisher"
+
 
 kalman_gain = 0
 current_state = 0
@@ -27,15 +29,17 @@ def kalman_filter(measurement):
     current_state = predicted_state + kalman_gain * (measurement.data - predicted_state)
     uncertainty = (1 - kalman_gain) * predicted_uncertainty
 
-
     rospy.loginfo(current_state)
+    pub.publish(current_state)
 
 
 def listener():
-    rospy.init_node(TOPIC_NAME + '_listener')
     rospy.Subscriber(TOPIC_NAME, Float32, kalman_filter)
+    rospy.loginfo(current_state)
     rospy.spin()
-
-
+    
+        
 if __name__ == "__main__":
+    pub = rospy.Publisher(TOPIC_NAME_PUBLISHER, Float32, queue_size=10)
+    rospy.init_node(TOPIC_NAME + '_listener')   
     listener()
